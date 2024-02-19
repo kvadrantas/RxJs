@@ -36,6 +36,13 @@ export class HomeComponent implements OnInit {
       .loadAllCourses()
       .pipe(map((courses) => courses.sort(sortCoursesBySeqNo))); // Sort all courses by Sequence No with sortCoursesBySeqNo function
 
+    // SHARE REPLAY OPERATOR - used to avoid duplicated Http requests
+    // By default we have http requests made per each subscription. So for below 2 observables beginnerCourses$ and advancedCourses$ we will have
+    // 2 separate http requests. Remember- we subscribe to these 2 observables in html part with async pipe (advancedCourses$ | async).
+    // if we will make 3-rd subscription in here with
+    courses$.subscribe((val) => console.log(val)); // we will see 3 http requests in Network tab
+    // Our goal is to make Http request only once and then reuse it multiple times. We achieve this with shareReplay() operator in http-services.ts file
+
     this.beginnerCourses$ = courses$.pipe(
       map(
         (courses) => courses.filter((course) => course.category == "BEGINNER") // Filter all courses by category BEGINNER

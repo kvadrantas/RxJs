@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Course } from "../model/course";
-import { map } from "rxjs/operators";
+import { map, shareReplay } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
@@ -14,8 +14,9 @@ export class HttpService {
   // this data. Instead service returns Observable and the data is actually read in the components, where you subscirbe to this
   // service.
   loadAllCourses(): Observable<Course[]> {
-    return this.http
-      .get<Course[]>("/api/courses")
-      .pipe(map((res) => res["payload"]));
+    return this.http.get<Course[]>("/api/courses").pipe(
+      map((res) => res["payload"]),
+      shareReplay() // Use shareReplay() operator to avoid duplicated Http requests and reduce Http requests to the minimum
+    );
   }
 }
