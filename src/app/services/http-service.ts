@@ -10,7 +10,7 @@ import { map } from "rxjs/operators";
 export class HttpService {
   constructor(private http: HttpClient) {}
 
-  // STATELESS OBSERVABLE BASED SERVICE - it means, that this service does not hold any data and it means, that it does not use memory to store
+  // STATELESS OBSERVABLE BASED SERVICE - it means, that this service does not hold any data and it means, that it does not use any memory to store
   // this data. Instead service returns Observable and the data is actually read in the components, where you subscirbe to this
   // service.
   loadAllCourses(): Observable<Course[]> {
