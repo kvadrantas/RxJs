@@ -1,81 +1,17 @@
 <div class="courses-panel">
   <h3>All Courses</h3>
 
+  <!-- <mat-card> was used 2 times in this component, so to simplify code I have created separate presentational component <app-courses-card-list> -->
   <mat-tab-group>
     <mat-tab label="Beginners">
-      <!-- You cannot directly in html consume observables and you need to use async pipe to subscribe to observable -->
-      <!-- async pipe also will automatically unsubscribe from observables on component destroy. No need to unsubscribe manually and no memory leaks -->
-      <mat-card
-        *ngFor="let course of beginnerCourses$ | async"
-        class="course-card mat-elevation-z10"
-      >
-        <mat-card-header>
-          <mat-card-title>{{ course.description }}</mat-card-title>
-        </mat-card-header>
-
-        <img mat-card-image [src]="course.iconUrl" />
-
-        <mat-card-content>
-          <p>{{ course.longDescription }}</p>
-        </mat-card-content>
-
-        <mat-card-actions class="course-actions">
-          <button
-            mat-button
-            mat-raised-button
-            color="primary"
-            [routerLink]="['/courses', course.id]"
-          >
-            VIEW COURSE
-          </button>
-
-          <button
-            mat-button
-            mat-raised-button
-            color="accent"
-            (click)="editCourse(course)"
-          >
-            EDIT
-          </button>
-        </mat-card-actions>
-      </mat-card>
+      <app-courses-card-list
+        [courses]="beginnerCourses$ | async"
+      ></app-courses-card-list>
     </mat-tab>
-
     <mat-tab label="Advanced">
-      <!-- You cannot directly in html consume observables and you need to use async pipe to subscribe to observable -->
-      <!-- async pipe also will automatically unsubscribe from observables on component destroy. No need to unsubscribe manually and no memory leaks -->
-      <mat-card
-        *ngFor="let course of advancedCourses$ | async"
-        class="course-card mat-elevation-z10"
-      >
-        <mat-card-header>
-          <mat-card-title>{{ course.description }}</mat-card-title>
-        </mat-card-header>
-
-        <img mat-card-image [src]="course.iconUrl" />
-
-        <mat-card-content>
-          <p>{{ course.longDescription }}</p>
-        </mat-card-content>
-
-        <mat-card-actions class="course-actions">
-          <button
-            mat-button
-            class="mat-raised-button mat-primary"
-            [routerLink]="['/courses', course.id]"
-          >
-            VIEW COURSE
-          </button>
-
-          <button
-            mat-button
-            class="mat-raised-button mat-accent"
-            (click)="editCourse(course)"
-          >
-            EDIT
-          </button>
-        </mat-card-actions>
-      </mat-card>
+      <app-courses-card-list
+        [courses]="advancedCourses$ | async"
+      ></app-courses-card-list>
     </mat-tab>
   </mat-tab-group>
 </div>

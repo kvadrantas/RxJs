@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   beginnerCourses$: Observable<Course[]>;
   advancedCourses$: Observable<Course[]>;
 
-  constructor(private httpService: HttpService, private dialog: MatDialog) {}
+  constructor(private httpService: HttpService) {}
 
   ngOnInit() {
     // We add $ sign to the end of variable, which represents an Observable
@@ -54,17 +54,5 @@ export class HomeComponent implements OnInit {
         (courses) => courses.filter((course) => course.category == "ADVANCED") // Filter all courses by category ADVANCED
       )
     );
-  }
-
-  editCourse(course: Course) {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "400px";
-
-    dialogConfig.data = course;
-
-    const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
   }
 }
