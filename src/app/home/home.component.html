@@ -4,13 +4,17 @@
   <!-- <mat-card> was used 2 times in this component, so to simplify code I have created separate presentational component <app-courses-card-list> -->
   <mat-tab-group>
     <mat-tab label="Beginners">
+      <!-- We want data to be reloaded once we save changes, so we would see latest updates. To achieve this, we are emiting coursesChanged event in courses-card-list component, once data was changed and saved.
+      and in this component we are listeting for coursesChanged event and reload data, once event was emited -->
       <app-courses-card-list
         [courses]="beginnerCourses$ | async"
+        (coursesChanged)="reloadCourses()"
       ></app-courses-card-list>
     </mat-tab>
     <mat-tab label="Advanced">
       <app-courses-card-list
         [courses]="advancedCourses$ | async"
+        (coursesChanged)="reloadCourses()"
       ></app-courses-card-list>
     </mat-tab>
   </mat-tab-group>

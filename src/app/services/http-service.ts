@@ -19,4 +19,11 @@ export class HttpService {
       shareReplay() // Use shareReplay() operator to avoid duplicated Http requests and reduce Http requests to the minimum
     );
   }
+
+  // We are saving edited data here with saveCourse observable
+  saveCourse(courseId: string, changes: Partial<Course>): Observable<any> {
+    return this.http
+      .put(`/api/courses/${courseId}`, changes)
+      .pipe(shareReplay()); // Use shareReplay() operator to avoid duplicated Http requests and reduce Http requests to the minimum
+  }
 }

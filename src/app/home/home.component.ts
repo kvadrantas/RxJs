@@ -30,6 +30,11 @@ export class HomeComponent implements OnInit {
   constructor(private httpService: HttpService) {}
 
   ngOnInit() {
+    this.reloadCourses(); // We are loading data once component was initialized
+  }
+
+  // We are reloading data each time this data was edited and saved
+  reloadCourses() {
     // We add $ sign to the end of variable, which represents an Observable
     // So we declare courses$ variable and asign to it httpServices, which returns an Observable
     const courses$ = this.httpService
