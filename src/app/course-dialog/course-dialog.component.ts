@@ -20,6 +20,13 @@ import { LoadingService } from "../loading/loading.service";
   selector: "course-dialog",
   templateUrl: "./course-dialog.component.html",
   styleUrls: ["./course-dialog.component.css"],
+  // This course-dialog.component is opened by the angular material framework and it exists in a different component tree then our components
+  // This is the reason why it cannot see and use <loading> spinner component, imported globally under app.component.html
+  // Because of that, we are importing here separate local instance of the LoadinService, which will be accessible only in this component and it's childs
+  // as our couse-dialog.component.ts cannot access and use <loading> component added globally to app.component.html
+  providers: [
+    LoadingService
+  ]
 })
 export class CourseDialogComponent implements AfterViewInit {
   form: FormGroup;
@@ -50,7 +57,17 @@ export class CourseDialogComponent implements AfterViewInit {
     // We subscribe to saveCourse Observable to perform data save. saveCourse returns aither error or successful answer, depending
     // on how save atempt to backend server went. We catch this answer as a "val" variable and pass it to close dialog function
     // to provide closing reason
-    this.httpService.saveCourse(this.course.id, changes).subscribe((val) => {
+
+
+    // ShowLoaderUntilCompleted() takes observable as an input argument
+    // We want to pass saveCourse$ observable to this method to add Loading indicator capabilities to this observable
+    // So ShowLoaderUntilCompleted() method takes saveCourse$ observable as an input parameter and then returns observable with Loading indicator capabilities,
+    // to which we subscribe and use
+    // Generally speaking we see Loading Spinner once we are saving course, we have edited
+    const saveCourse$ = this.httpService.saveCourse(this.course.id, changes);
+    
+    this.loadingService.ShowLoaderUntilCompleted(saveCourse$)
+      .subscribe((val) => {
       this.dialogRef.close(val);
     });
   }

@@ -1,5 +1,8 @@
 <h2 mat-dialog-title>{{course.description}}</h2>
-
+<!-- We are importing Loading Spinner to course-dialog component separatelly, because it is
+opened by the angular material framework and it exists in a different component tree then our components
+and is unable to use <loading> spinner component, imported globally under app.component.html -->
+<loading></loading>
 
 <mat-dialog-content [formGroup]="form">
 
