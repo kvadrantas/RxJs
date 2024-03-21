@@ -1,1 +1,6 @@
-
+<!-- loadingService.loading$ is an observable. We are subscribing to it and consuming with async.
+Spinner will be shown once loading$ is true and not if false -->
+<div class="spinner-container" *ngIf="loadingService.loading$ | async">
+    <!-- Here we are using spinner from material library -->
+  <mat-spinner></mat-spinner>
+</div>

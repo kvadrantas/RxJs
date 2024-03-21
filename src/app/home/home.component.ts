@@ -16,6 +16,7 @@ import { HttpClient } from "@angular/common/http";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
 import { HttpService } from "../services/http-service";
+import { LoadingService } from "../loading/loading.service";
 
 @Component({
   selector: "home",
@@ -27,7 +28,10 @@ export class HomeComponent implements OnInit {
   beginnerCourses$: Observable<Course[]>;
   advancedCourses$: Observable<Course[]>;
 
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit() {
     this.reloadCourses(); // We are loading data once component was initialized
@@ -35,11 +39,19 @@ export class HomeComponent implements OnInit {
 
   // We are reloading data each time this data was edited and saved
   reloadCourses() {
+    // We turn loading spinner on once courses start loading
+    this.loadingService.loadingOn();
+
     // We add $ sign to the end of variable, which represents an Observable
     // So we declare courses$ variable and asign to it httpServices, which returns an Observable
     const courses$ = this.httpService
       .loadAllCourses()
-      .pipe(map((courses) => courses.sort(sortCoursesBySeqNo))); // Sort all courses by Sequence No with sortCoursesBySeqNo function
+      .pipe(map((courses) => courses.sort(sortCoursesBySeqNo)), // Sort all courses by Sequence No with sortCoursesBySeqNo function
+      finalize(() => {
+        // finalize RxJs operator allows as to execute something once loadAllCourses observable completes or errors out
+        this.loadingService.loadingOff(); // In this situation we are turnint loading spinner off once courses data loaded
+      })
+    );
 
     // SHARE REPLAY OPERATOR - used to avoid duplicated Http requests
     // By default we have http requests made per each subscription. So for below 2 observables beginnerCourses$ and advancedCourses$ we will have
