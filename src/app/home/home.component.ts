@@ -17,6 +17,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
 import { HttpService } from "../services/http-service";
 import { LoadingService } from "../loading/loading.service";
+import { MessagesService } from "../messages/messages.service";
 
 @Component({
   selector: "home",
@@ -30,7 +31,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private httpService: HttpService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private messagesService: MessagesService
   ) {}
 
   ngOnInit() {
@@ -48,8 +50,15 @@ export class HomeComponent implements OnInit {
     // So we declare courses$ variable and asign to it httpServices, which returns an Observable
     const courses$ = this.httpService
       .loadAllCourses()
-      .pipe(map((courses) => courses.sort(sortCoursesBySeqNo))); // Sort all courses by Sequence No with sortCoursesBySeqNo function
-  
+      .pipe(map((courses) => courses.sort(sortCoursesBySeqNo)), // Sort all courses by Sequence No with sortCoursesBySeqNo function
+        catchError(err => {
+          const message = "Could not laod courses";
+          this.messagesService.showErrors(message);
+          console.log(message, err);
+          // throwError() creates a new oblservable, that imidiattly emits the err and it ends it's lifecycle
+          return throwError(err);
+        })
+      );
     // ShowLoaderUntilCompleted() takes observable as an input argument
     // We want to pass courses$ observable to this method to add Loading indicator capabilities to this observable
     // So ShowLoaderUntilCompleted() method takes courses$ observable as an input parameter and then returns observable with Loading indicator capabilities,
