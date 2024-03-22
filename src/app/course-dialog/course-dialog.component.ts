@@ -16,6 +16,7 @@ import { throwError } from "rxjs";
 import { HttpService } from "../services/http-service";
 import { LoadingService } from "../loading/loading.service";
 import { MessagesService } from "../messages/messages.service";
+import { CoursesStore } from "../services/courses.store";
 
 @Component({
   selector: "course-dialog",
@@ -36,11 +37,13 @@ export class CourseDialogComponent implements AfterViewInit {
   course: Course;
 
   constructor(
-    private httpService: HttpService,
+    // Loading spinner no longer needed here as we are using State management 
+    // and data changes would be updated imidiatelly to the user interface
+    // httpService (for data saving request) we are moving from here to Store management service
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CourseDialogComponent>,
-    private loadingService: LoadingService,
     private messagesService: MessagesService,
+    private coursesStore: CoursesStore,
     @Inject(MAT_DIALOG_DATA) course: Course
   ) {
     this.course = course;
@@ -67,21 +70,10 @@ export class CourseDialogComponent implements AfterViewInit {
     // So ShowLoaderUntilCompleted() method takes saveCourse$ observable as an input parameter and then returns observable with Loading indicator capabilities,
     // to which we subscribe and use
     // Generally speaking we see Loading Spinner once we are saving course, we have edited
-    const saveCourse$ = this.httpService.saveCourse(this.course.id, changes)
-      .pipe(
-        // Error handling with the catchError RxJs operator
-        catchError(err => {
-          const message = "Could not save course";
-          console.log(message, err);
-          this.messagesService.showErrors(message);   // We are telling messagesService to show errors
-          return throwError(err);   // We are throwing error and ending saveCourse observable lifecycle
-      })
-    )
+    this.coursesStore.saveCourse(this.course.id, changes)
+      .subscribe();
     
-    this.loadingService.ShowLoaderUntilCompleted(saveCourse$)
-      .subscribe((val) => {
-      this.dialogRef.close(val);
-    });
+    this.dialogRef.close(changes);
   }
 
   close() {

@@ -1,4 +1,27 @@
 
+**Building Stateless Observable Services** we are ending up each time fetching data from backend servers while using web applications and navigating between different pages and components used in it.
+
+While lots of applications can be build that way and you will not notice any issues, there might be a problem with longer taking network requests (taking longer than couple of seconds), as the user jumping between pages will need to wait each time for data to be loaded.
+
+To give better user experience with less network requests and less Loading Spinners showed to the users, we might need to implement State Management.
+
+Best practice is to try to keep your application stateless and only add **State Management** if you really need to improve the user experience, if you have network requests, that are very  slow, if you are showing lots of Loading Spinners to the users, if you have long backend delays.
+
+**STATELESS SERVICE** is a service, which does not keep in memory the data, which was retrieved from backend server, instead, It returns the data to the caller.
+
+**STATEFUL SERVICE** is a service, which keeps some state in memory.
+
+**REACTIVE PROGRAMMING** is an asynchronous programming using observables that makes it easier to compose asynchronous or callback-based code. 
+And RxJS (Reactive Extensions for JavaScript) is a library for reactive programming.
+
+**State management** is the process of managing the states of user controls. It helps developers build large-scale applications with heavy data communications while sustaining high application performance.
+
+**Optimistic UI (optimistic data modification)** - is a pattern that you can use to simulate the results of a mutation and update the UI even before receiving a response from the server. Once the response is received from the server, optimistic result is thrown away and replaced with the actual result.
+
+
+
+
+
 ## The Reactive Angular Course
 
 This repository contains the code of the [Reactive Angular Course](https://angular-university.io/course/reactive-angular-course).

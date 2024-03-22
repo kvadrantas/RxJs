@@ -8,14 +8,14 @@
       and in this component we are listeting for coursesChanged event and reload data, once event was emited -->
       <app-courses-card-list
         [courses]="beginnerCourses$ | async"
-        (coursesChanged)="reloadCourses()"
       ></app-courses-card-list>
     </mat-tab>
     <mat-tab label="Advanced">
       <app-courses-card-list
         [courses]="advancedCourses$ | async"
-        (coursesChanged)="reloadCourses()"
       ></app-courses-card-list>
     </mat-tab>
   </mat-tab-group>
 </div>
+<!-- Removing this (coursesChanged)="reloadCourses()" as we no longer need to re-read courses list whenever data 
+modification occur. We have State management and our logic will reflect all data changes imidiatly (Optimistic UI) -->
