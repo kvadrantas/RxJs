@@ -29,6 +29,7 @@ import { catchError, map, shareReplay, tap } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { LoadingService } from "../loading/loading.service";
 import { MessagesService } from "../messages/messages.service";
+import { Lesson } from "../model/lesson";
 
 // We want to have only one single instance of State and this is why it provide it to root
 @Injectable({
@@ -105,5 +106,18 @@ export class CoursesStore {
                     .sort(sortCoursesBySeqNo)
                 )
         )
+    }
+
+    searchLessons(search: string): Observable<Lesson[]>{
+        return this.http.get<Lesson[]>('/api/lessons', {
+            params: {
+                filter: search,
+                pageSize: '100'
+            }
+        })
+            .pipe(
+                map(res => res['payload']),
+                shareReplay()
+            );
     }
 }

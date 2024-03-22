@@ -18,6 +18,8 @@ And RxJS (Reactive Extensions for JavaScript) is a library for reactive programm
 
 **Optimistic UI (optimistic data modification)** - is a pattern that you can use to simulate the results of a mutation and update the UI even before receiving a response from the server. Once the response is received from the server, optimistic result is thrown away and replaced with the actual result.
 
+**Master-Detail UI Pattern** – type of user interface pattern, where we are displaying a master table and we can click on that table rows and see related details in a separate component.
+Very often used in search results and in any other situations, where we want to have master table containing a list of results, that we want again to click on and view in more detail in a separate screen.
 
 
 

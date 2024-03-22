@@ -1,1 +1,8 @@
-<p>lesson works!</p>
+<div class="lesson-detail">
+    <h3>{{ lesson.description }}</h3>
+    <h5>{{ lesson.duration }}</h5>
+    <!-- We need to mark url to Angular as safe to use as it is and there is no reason to hide it from the end user (safeUrl) -->
+    <iframe src=""  width="400" height="220" frameborder="0" allowfullscreen
+        [src]="('https://www.youtube.com/embed/' + lesson?.videoId) | safeUrl"
+    ></iframe>
+</div>
