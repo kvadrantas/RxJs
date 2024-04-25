@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { Course, sortCoursesBySeqNo } from "../model/course";
 import { interval, noop, Observable, of, throwError, timer } from "rxjs";
 import {
@@ -24,6 +24,12 @@ import { CoursesStore } from "../services/courses.store";
   selector: "home",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"],
+  // ON PUSH CHANGE DETECTION
+  // is an optimized, faster chagne detection mode. In default change detection mode Angular will check each template and expressions (egzample: [courses]="beginnerCourses$ | async") used in them
+  // in order to determen, if a given component should be rerendered or not. When you have a lot of data to show to the user with a lot of
+  // template expressions you might want to enable OnPush change detection in some of the components to make user interface more responsive.
+  
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
   // TYPICAL REACTIVE STYLE COMPONENT - all variables are observables

@@ -2,7 +2,7 @@
 // Very often used in search results and in any other situations, where we want to have master table containing a list of results, that we want again to click on and view in more detail in a separate screen.
 
   
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Course} from '../model/course';
 import {
@@ -25,7 +25,8 @@ import { CoursesStore } from '../services/courses.store';
 @Component({
   selector: 'course',
   templateUrl: './search-lessons.component.html',
-  styleUrls: ['./search-lessons.component.css']
+  styleUrls: ['./search-lessons.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchLessonsComponent implements OnInit {
 
