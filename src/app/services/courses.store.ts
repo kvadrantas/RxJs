@@ -49,6 +49,26 @@ export class CoursesStore {
         this.loadAllCourses();
     }
 
+    loadCourseById(courseId: number) {
+        return this.http.get<Course>(`/api/courses/${courseId}`)
+            .pipe(
+                shareReplay()
+            );
+    }
+
+    loadAllCourseLessons(courseId: number): Observable<Lesson[]> {
+        return this.http.get<Lesson[]>('/api/lessons', {
+            params: {
+                pageSize: '10000',
+                courseId: courseId.toString()
+            }
+        })
+            .pipe(
+                map(res => res['payload']),
+                shareReplay()
+            );
+    }
+
     private loadAllCourses() {
         const loadCourses$ = this.http.get<Course[]>('/api/courses')
             .pipe(
